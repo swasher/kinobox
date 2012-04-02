@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block stylesheet %}{% endblock %}
+    <title>{% block title %}Kinobox{% endblock %}</title>
+</head>
+
+<body>
+<div id="sidebar">
+    {% block sidebar %}
+        <table width="1000px" border="0" cellspacing="2" cellpadding="4">
+            <tr align="left" bgcolor="#999999">
+                <td><a href="/">Home</a></td>
+                <td><a href="/add/">Add</a></td>
+            </tr>
+        </table>
+    {% endblock %}
+</div>
+
+
+{% block content %}{% endblock %}
+
+
+</body>
+</html>

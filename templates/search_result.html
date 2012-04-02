@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ STATIC_URL }}../static/style_search.css" />
+{% endblock %}
+
+{% block content %}
+<p>Вы искали: <strong>{{ zapros }}</strong></p>
+
+{% if results %}
+    <p>Найдено {{ results|length }} фильмов.</p>
+    <div class="table">
+    {% for movi in results %}
+        <div class="row">
+        <div class="col">
+            <div id="poster"><img src={{ movi.poster }}  width="77" height="115"></div>
+            <div id="title">{{ movi.title }}</div>
+            <div id="origname"><b>Orig:</b> {{ movi.origname }}</div>
+            <div id="altname"><b>Alt:</b> {{ movi.altname }}</div>
+            <div id="year">{{ movi.year }}</div>
+            <div id="overview">{{ movi.overview }}</div>
+            <div id="buttonadd"><form action="/doadd/" method="get" ><button value="{{ movi.id }}" name="id" type="submit">Add</button></form></div>
+            <div id="url"><a href="{{ movi.url }}"><img src="{{ STATIC_URL }}../static/tmdb-logo.png" width="60" height="40"></a></div>
+        </div>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <p>Фильмов не найдено.</p>
+{% endif %}
+{% endblock %}
