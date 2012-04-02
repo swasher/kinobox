@@ -5,6 +5,13 @@ from kinobox.box.views import add, grid, searchresult, doadd, changeseen
 from django.views.static import *
 from django.conf import settings
 
+#MAIN TO DO
+#todo - линк в гриде на источник контента
+#todo - сделать колонки в base.html
+#todo - линки на жанры, (актерам???)
+#todo - жанры в перечисление
+
+
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()

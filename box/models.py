@@ -1,5 +1,4 @@
 from django.db import models
-#blabla
 
 # Create your models here.
 class Genre(models.Model):

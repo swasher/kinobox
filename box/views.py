@@ -6,11 +6,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from box.models import *
-import lib.tmdb
 from lib import tmdb_addon
-from tmdb import *
+# from lib.tmdb import *
 from lib.functions import *
-import lib.tmdb
 import datetime
 
 
