@@ -24,6 +24,7 @@ def grid(request):
 def changeseen(request, idd):
     #изменяет флаг seen на противоположный
     #request содержит id который надо изменить
+    #blabla
     idd=safe_int(idd)
     mov=Movi.objects.filter(tmdb_id=idd)[0]
     a=mov.seen
