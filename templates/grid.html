@@ -24,7 +24,7 @@
                     </div>
                     <div id="url"><a href="http://www.themoviedb.org/movie/{{ movi.tmdb_id }}"><img src="{{ STATIC_URL }}../static/tmdb-logo.png" width="60" height="40"></a></div>
                     {% if movi.seen %}
-                        <div id="seen"><a href="{% url box.views.changeseen movi.tmdb_id %}"><img src="{{ STATIC_URL }}../static/seen.gif" ></a></div>
+                        <div id="seen"><a href="{% url box.views.changeseen movi.tmdb_id %}"><img src="{{ STATIC_URL }}../static/seen.gif"></a></div>
                     {% else %}
                         <div id="seen"><a href="{% url box.views.changeseen movi.tmdb_id %}"><img src="{{ STATIC_URL }}../static/not_seen.gif" ></a></div>
                     {% endif %}

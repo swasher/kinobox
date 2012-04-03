@@ -7,10 +7,11 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from box.models import *
 from lib import tmdb_addon
-# from lib.tmdb import *
+from lib import tmdb
 from lib.functions import *
 import datetime
 
+#from lib.tmdb import *
 
 def add(request):
     return render_to_response('add_form.html')
@@ -59,7 +60,7 @@ def doadd(request):
     if Movi.objects.filter(tmdb_id=id):
         return HttpResponse('Фильм уже в базе')
     else:
-        searchResult=lib.tmdb.getMovieInfo(id)
+        searchResult=tmdb.getMovieInfo(id)
 
         #get poster
         try:
