@@ -1,8 +1,6 @@
-# GVIM stuff #
-##############
-.*.swp
-
-# Python stuff #
-################
-build
+.idea/
 *.pyc
+kinobox.bk/
+phpliteadmin/
+test/
+run.sh
