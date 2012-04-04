@@ -4,12 +4,14 @@
 # Create your views here
 
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from box.models import *
 from lib import tmdb_addon
 from lib import tmdb
 from lib.functions import *
+from box.forms import SelectForm
 import datetime
+
 
 #from lib.tmdb import *
 
@@ -17,8 +19,13 @@ def add(request):
     return render_to_response('add_form.html')
 
 def grid(request):
+    #if request.method == 'POST':
+    form=SelectForm(request.POST)
     q=Movi.objects.all()
-    return render_to_response('grid.html', {'results': q})
+    return render_to_response('grid.html', {'results': q, "form": form})
+    #q=(a.year) for a in Movi.objects.all()
+    #return HttpResponse(q)
+
 
 def changeseen(request, idd):
     #изменяет флаг seen на противоположный
@@ -30,7 +37,8 @@ def changeseen(request, idd):
     mov.seen=not a
     mov.save()
     q=Movi.objects.all()
-    return render_to_response('grid.html', {'results': q})
+    #return render_to_response('grid.html', {'results': q})
+    return redirect('/grid/')
 
 def searchresult(request):
     """Функция get_list_by_name('zapros') возвращает объект:
@@ -101,6 +109,7 @@ def doadd(request):
             mov.genres.add(gen)
             mov.save()
         q=Movi.objects.all()
-        return render_to_response('grid.html', {'results': q})
+        #return render_to_response('grid.html', {'results': q})
+        return redirect('/grid/')
 
 

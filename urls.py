@@ -7,9 +7,9 @@ from django.conf import settings
 
 #MAIN TO DO
 #todo - линк в гриде на источник контента
-#todo - сделать колонки в base.html
 #todo - линки на жанры, (актерам???)
 #todo - жанры в перечисление
+#todo - pagination для grid-a
 
 
 # Uncomment the next two lines to enable the admin:
