@@ -164,10 +164,76 @@ html {
     padding: 0;
     margin: 0;
     position: relative;
-    top: 60px;
-    left: 30px;
-    /*width: 21px;
+    top: 40px;
+    left: -60px;
+    width: 21px;
     height: 16px;
+    float: left;
+}
 
-    /*float: left;*/
+#photo-block {
+    padding: 0;
+    margin: 0;
+    position: relative;
+    top: 4px;
+    left: 3px;
+    width: 696px;
+    height: 115px;
+    overflow: hidden;
+    float: left;
+    border: 1px double black; /* Параметры границы */
+    background: #fc3;
+}
+
+#photo {
+    padding: 0;
+    margin: 0;
+    position: relative;
+    /*top: 3px;*/
+    /*left: 3px;*/
+    width: 45px;
+    height: 68px;
+    float: left;
+    border: 1px double black; /* Параметры границы */
+    /*background: #fc3;*/
+}
+
+a {
+    border-bottom: 1px dashed brown;
+    text-decoration: none;
+}
+
+a:hover {
+    position: relative;
+}
+
+a span {
+    display: none;
+}
+
+a:hover span {
+    display: block;
+    position: absolute; top: 10px; left: 0;
+    /* formatting only styles */
+    padding: 5px; margin: 10px; z-index: 100;
+    background: #f0f0f0; border: 1px dotted #c0c0c0;
+    opacity: 0.9;
+    /* end formatting */
+}
+
+.tip {
+    border-bottom: 1px dashed brown;
+    text-decoration: none;
+    position: relative;
+    display: none;
+}
+
+a:hover span {
+    display: block;
+    position: absolute; top: 10px; left: 0;
+    /* formatting only styles */
+    padding: 5px; margin: 10px; z-index: 100;
+    background: #f0f0f0; border: 1px dotted #c0c0c0;
+    opacity: 0.9;
+    /* end formatting */
 }

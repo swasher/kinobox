@@ -6,16 +6,18 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}../static/style_grid.css" />
 {% endblock %}
 
+
 {% block content %}
+    I Love <a href="#" class="tip">CSS<span>Cascading Style Sheets</span></a>.
     <p>Найдено {{ results|length }} фильмов.</p>
     <div class="table">
         {% for movi in results %}
             <div class="row">
                 <div class="col">
-                    <div id="poster"><img src={{ movi.poster }}  width="77" height="115"></div>
+                    <div id="poster"><img src= {{ movi.poster.url }}  width="77" height="115"></div>
                     <div id="title">{{ movi.title }}</div>
-                    <div id="origname"><b>Orig:</b> {{ movi.origname }}</div>
-                    <div id="altname"><b>Alt:</b> {{ movi.altname }}</div>
+                    <div id="origname"><b>Orig:</b> {{ movi.origtitle }}</div>
+                    <div id="altname"><b>Countries:</b> {{ movi.countries }}</div>
                     <div id="year">{{ movi.year }}</div>
                     <div id="overview">{{ movi.overview }}
                         {% for genres in movi.genres.all %}
@@ -24,10 +26,17 @@
                     </div>
                     <div id="url"><a href="http://www.themoviedb.org/movie/{{ movi.tmdb_id }}"><img src="{{ STATIC_URL }}../static/tmdb-logo.png" width="60" height="40"></a></div>
                     {% if movi.seen %}
-                        <div id="seen"><a href="{% url box.views.changeseen movi.tmdb_id %}"><img src="{{ STATIC_URL }}../static/seen.gif"></a></div>
+                        <div id="seen"><a href="{% url box.views.changeseen movi.tmdb_id %}"><img src="{{ STATIC_URL }}../static/seen.gif""></a></div>
                     {% else %}
                         <div id="seen"><a href="{% url box.views.changeseen movi.tmdb_id %}"><img src="{{ STATIC_URL }}../static/not_seen.gif" ></a></div>
                     {% endif %}
+                    <div id="photo-block">
+                    {% for relationship in movi.duty_set.all %}
+                        <div id="photo">
+                        <img alt="{{ relationship.person.name }} - {{ relationship.character }}" src=http://192.168.0.61:8000/media/{{ relationship.person.photo }} width="45" height="68"></i>
+                        </div>
+                    {% endfor %}
+                    </div>
                 </div>
             </div>
         {% endfor %}

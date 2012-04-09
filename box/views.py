@@ -68,48 +68,7 @@ def doadd(request):
     if Movi.objects.filter(tmdb_id=id):
         return HttpResponse('Фильм уже в базе')
     else:
-        searchResult=tmdb.getMovieInfo(id)
-
-        #get poster
-        try:
-            poster=searchResult['images'][0]['w154']
-        except:
-            poster=''
-
-        #get one string with countries
-        countries_list=[]
-        for country in searchResult['countries']: countries_list.append((searchResult['countries'][country]).keys()[0])
-        countries_list=", ".join(countries_list)
-
-        #get genre list
-        genre_list=[]
-        genres=searchResult['categories']['genre'].keys()
-        for genre in genres: genre_list.append(genre)
-        #genre_list=", ".join(genre_list)
-
-        mov=Movi(title=searchResult['name'],
-            overview=searchResult['overview'],
-            origtitle = searchResult['alternative_name'],
-            tmdb_id=searchResult['id'],
-            year = searchResult['released'][0:4],
-                seen = False,
-                seendate = datetime.date.today(),
-                myrating = 0,
-                poster = poster,
-                countries=countries_list,)
-        mov.save()
-
-        for genre in genre_list:
-            try:
-                gen=Genre.objects.filter(genre=genre)[0]
-            except:
-                g=Genre(genre=genre)
-                g.save()
-            gen=Genre.objects.filter(genre=genre)[0]
-            mov.genres.add(gen)
-            mov.save()
-        q=Movi.objects.all()
-        #return render_to_response('grid.html', {'results': q})
+        tmdb_addon.add_tmdb_movie(id)
         return redirect('/grid/')
 
 

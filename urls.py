@@ -6,10 +6,12 @@ from django.views.static import *
 from django.conf import settings
 
 #MAIN TO DO
+#todo - удаление фильма в виде функции класса movi.delete(id)
 #todo - линк в гриде на источник контента
 #todo - линки на жанры, (актерам???)
 #todo - жанры в перечисление
 #todo - pagination для grid-a
+#todo - вынести добавление фильма с TMDB в функцию
 
 
 # Uncomment the next two lines to enable the admin:
@@ -36,3 +38,10 @@ urlpatterns = patterns('',
     (r'^$', grid),     #главный список
     url(r'^admin/', include(admin.site.urls)),
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+            }),
+    )
