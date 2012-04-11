@@ -2,14 +2,15 @@
 
 {% block title %}Грид{% endblock %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}../static/style_grid.css" />
+{% block stylesheets %}
+    {% comment %} @import url "{{ STATIC_URL }}../static/style_grid.css"; {% endcomment %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}../static/style_grid.css" type="text/css"/>
 {% endblock %}
 
 
 {% block content %}
-    I Love <a href="#" class="tip">CSS<span>Cascading Style Sheets</span></a>.
     <p>Найдено {{ results|length }} фильмов.</p>
+
     <div class="table">
         {% for movi in results %}
             <div class="row">
@@ -33,7 +34,8 @@
                     <div id="photo-block">
                     {% for relationship in movi.duty_set.all %}
                         <div id="photo">
-                        <img alt="{{ relationship.person.name }} - {{ relationship.character }}" src=http://192.168.0.61:8000/media/{{ relationship.person.photo }} width="45" height="68"></i>
+                        {% comment %}<img alt="{{ relationship.person.name }} - {{ relationship.character }}" src=http://192.168.0.61:8000/media/{{ relationship.person.photo }} width="45" height="68"></i> {% endcomment %}
+                        <a id="houdini" href="http://www.themoviedb.org/person/{{ relationship.person.tmdb_id }}" title="|<b>{{ relationship.person.name }}</b>|<i>{{ relationship.character }}</i>"><img src=../media/{{ relationship.person.photo }} width="45" height="68"></a>
                         </div>
                     {% endfor %}
                     </div>

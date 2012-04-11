@@ -186,54 +186,14 @@ html {
 }
 
 #photo {
-    padding: 0;
-    margin: 0;
+    padding: 1px;
+    margin: 1px;
     position: relative;
-    /*top: 3px;*/
-    /*left: 3px;*/
+    top: 3px;
+    left: 3px;
     width: 45px;
     height: 68px;
     float: left;
     border: 1px double black; /* Параметры границы */
     /*background: #fc3;*/
-}
-
-a {
-    border-bottom: 1px dashed brown;
-    text-decoration: none;
-}
-
-a:hover {
-    position: relative;
-}
-
-a span {
-    display: none;
-}
-
-a:hover span {
-    display: block;
-    position: absolute; top: 10px; left: 0;
-    /* formatting only styles */
-    padding: 5px; margin: 10px; z-index: 100;
-    background: #f0f0f0; border: 1px dotted #c0c0c0;
-    opacity: 0.9;
-    /* end formatting */
-}
-
-.tip {
-    border-bottom: 1px dashed brown;
-    text-decoration: none;
-    position: relative;
-    display: none;
-}
-
-a:hover span {
-    display: block;
-    position: absolute; top: 10px; left: 0;
-    /* formatting only styles */
-    padding: 5px; margin: 10px; z-index: 100;
-    background: #f0f0f0; border: 1px dotted #c0c0c0;
-    opacity: 0.9;
-    /* end formatting */
 }
