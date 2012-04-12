@@ -38,6 +38,7 @@ class Duty(models.Model):
     department = models.CharField(max_length=40)
     character = models.CharField(max_length=40)
     job = models.CharField(max_length=40)
+    order = models.SmallIntegerField()
 
     def get_name(self):
         nick=self.person.name

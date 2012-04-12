@@ -11,16 +11,21 @@
         <script src="{{ STATIC_URL }}../static/jquery.cluetip.js" type="text/javascript"></script>
     {% endblock %}
 
+    <link rel="stylesheet" href="{{ STATIC_URL }}../static/jquery.cluetip.css" type="text/css" />
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ STATIC_URL }}../static/jquery.cluetip.css" type="text/css" />
     {% endblock %}
 
 
    <script type="text/javascript">
         $(document).ready(function() {
-            $('a.tips').cluetip();
-            $('#houdini').cluetip({splitTitle: '|', showTitle: false heading});
-            $('a.basic').cluetip();
+            $('.actortip').cluetip({
+                splitTitle: '|',
+                width: 150,
+                height: 'auto',
+                positionBy: 'fixed',
+                arrows: 'true',
+                cluetipClass: 'jtip',
+                cursor: 'pointer'});
         });
     </script>
 
@@ -53,7 +58,6 @@
 <body>
 <div id="container">
     <div id="header">
-        <a class="basic" href="ajax.html" rel="ajax.html">aaa</a>
         <h1>Header</h1>
     </div>
     <div id="wrapper">

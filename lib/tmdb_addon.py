@@ -134,5 +134,7 @@ def add_tmdb_movie(id):
 
         # В это месте у нас есть объекты фильма 'm' и актера 'pers'
         #m.persons.add(pers)
-        d = Duty(person=pers, movi=m, department='', character=actor.character, job='')
+        actorder=actor.order
+        if not isinstance(actor.order, int): actorder=-1
+        d = Duty(person=pers, movi=m, department='', character=actor.character, job='', order=actorder)
         d.save()
