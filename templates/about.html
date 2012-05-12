@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        html,body{margin:0;padding:0}
+        div#header h1{height:80px;line-height:80px;margin:0;padding-left:10px;background: #EEE;color: #79B30B}
+        div#titl{color: #787878;text-align:center;font-family: "Bitstream Vera Sans";font-size: 28px;}
+        div.logo{padding-bottom: 10px; float: left;  text-align: center; width: 100%;}
+    </style>
+{% endblock %}
+
+{% block navigation %}
+{% endblock %}
+
+{% block content %}
+    <div id=titl> Powered by technologies:</div>
+    <div class='logo'>
+        <img src="{{ STATIC_URL }}powered/django.png" title="Django" height=50 >
+    </div>
+    <div class='logo'>
+        <img src="{{ STATIC_URL }}powered/python.png" title="Python" height=50 >
+    </div>
+    <div class='logo'>
+        <img src="{{ STATIC_URL }}powered/sqlite.png" title="SQlite" height=50 >
+    </div>
+    <div class='logo'>
+        <img src="{{ STATIC_URL }}powered/ajax.jpg" title="AJAX" height=50 >
+    </div>
+    <div class='logo'>
+        <img src="{{ STATIC_URL }}powered/jquery.png" title="jQuery" height=50 >
+    </div>
+    <div class='logo'>
+        <img src="{{ STATIC_URL }}powered/cssom.png" title="CSS" height=50 >
+    </div>
+    <div class='logo'>
+        <img src="{{ STATIC_URL }}powered/HTML5.png" title="HTML5" height=50 >
+    </div>
+    <div class='logo'>
+        <img src="{{ STATIC_URL }}powered/linux.jpeg" title="Linux" height=50 >
+    </div>
+    <div class='logo'>
+        <img src="{{ STATIC_URL }}powered/ubuntu.jpg" title="Ubuntu" height=50 >
+    </div>
+
+{% endblock %}

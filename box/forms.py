@@ -5,7 +5,7 @@ __author__ = 'swasher'
 from django import forms
 from models import Movi
 
-YEAR_CHOISE=Movi.objects.values_list('id', 'year').order_by('year').distinct('year')
+YEAR_CHOISE=Movi.objects.values_list('id', 'year').order_by('year')#.distinct('year')
     #(a.id, a.year) for a in Movi.objects.all()
     #y = Movi.objects.values_list('id', 'year').order_by('year').distinct('year')
 

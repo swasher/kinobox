@@ -1,0 +1,165 @@
+@charset "utf-8";
+/* CSS Document */
+
+html {
+    overflow: visible;
+}
+
+#poster {
+    padding: 2px;
+    margin: 2px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+    float: left;
+    border: 1px double black; /* Параметры границы */
+    background: #fc3;
+}
+
+#title {
+    padding: 0;
+    margin: 0;
+    position: relative;
+    top: 3px;
+    left: 5px;
+    width: 350px;
+    height: 25px;
+    overflow: hidden;
+    float: left;
+    border: 1px double black; /* Параметры границы */
+    background: #fc3;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+    color: #FF0000;
+    font-weight: bold;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+#origtitle {
+    padding: 2px;
+    margin: 2px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+    float: left;
+    border: 1px double black; /* Параметры границы */
+    background: #fc3;
+}
+#countries {
+    padding: 2px;
+    margin: 2px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+    float: left;
+    border: 1px double black; /* Параметры границы */
+    background: #fc3;
+}
+
+#tagline {
+    padding: 2px;
+    margin: 2px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+    float: left;
+    border: 1px double black; /* Параметры границы */
+    background: #fc3;
+}
+
+#overview {
+    padding: 0;
+    margin: 0;
+    position: relative;
+    top: 7px;
+    left: 5px;
+    width: 300px;
+    height: 110px;
+    overflow: hidden;
+    border: 1px double black; /* Параметры границы */
+    background: #FFC0FF;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size:8px;
+    color:black;
+    float: none;
+}
+
+#year {
+    padding: 2px;
+    margin: 2px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+    float: left;
+    border: 1px double black; /* Параметры границы */
+    background: #fc3;
+}
+
+#seen{
+    padding: 0;
+    margin: 0;
+    position: relative;
+    top: 100px;
+    left: 100px;
+    width: 21px;
+    height: 16px;
+    float: left;
+}
+
+#stored{
+    padding: 0;
+    margin: 0;
+    position: relative;
+    top: 100px;
+    left: 0px;
+    width: 21px;
+    height: 16px;
+    float: left;
+}
+
+#dpicker {
+    padding: 0px;
+    margin: 0px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    height: 40px;
+    overflow: hidden;
+    float: left;
+    #border: 1px double black; /* Параметры границы */
+    /*background: #fc3;*/
+}
+
+.table{
+    display:table;
+    width:700px;
+}
+
+.row{
+    display:table-row;
+    border:1px solid #00008b;
+}
+
+.col{
+    display:table-cell;
+    border:1px solid #00008b;
+    vertical-align: top;
+}
+
+#photo {
+    padding: 0px;
+    margin: 1px;
+    position: relative;
+    top: 2px;
+    left: 2px;
+    width: 45px;
+    height: 68px;
+    float: left;
+    border: 1px double black; /* Параметры границы */
+    /*background: #fc3;*/
+}

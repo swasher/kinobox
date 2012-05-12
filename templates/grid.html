@@ -3,44 +3,139 @@
 {% block title %}Грид{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}../static/style_grid.css" type="text/css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}style_grid.css" type="text/css"/>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.actortip').cluetip({
+                splitTitle: '|',
+                width: 200,
+                height: 'auto',
+                positionBy: 'fixed',
+                arrows: 'true',
+                cluetipClass: 'jtip',
+                cursor: 'pointer'});
+        });
+    </script>
 {% endblock %}
 
 
 {% block content %}
-    <p>Найдено {{ results|length }} фильмов.</p>
+    'YEAR is ' {{ year }}
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if results.has_previous %}
+            <a href="?page={{ results.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ results.number }} of {{ results.paginator.num_pages }}.
+        </span>
+
+        {% if results.has_next %}
+            <a href="?page={{ results.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+    </div>
+
     <div class="table">
-        {% for movi in results %}
+        {% for movi in results.object_list %}
             <div class="row">
                 <div class="col">
-                    <div id="poster"><img src= {{ movi.poster.url }}  width="77" height="115"></div>
+                    {% if movi.poster %}
+                        <div id="poster">
+                            <a href="{% url box.views.moviepage movi.tmdb_id %}"> <img  border="0" src="{{ movi.poster.url }}" width="77" height="115"></a>
+                        </div>
+                    {% else %}
+                        <div id="poster"><img src="{{ STATIC_URL }}noposter.jpg" width="77" height="115"></div>
+                    {% endif %}
                     <div id="title">{{ movi.title }}</div>
                     <div id="origname"><b>Orig:</b> {{ movi.origtitle }}</div>
                     <div id="altname"><b>Countries:</b> {{ movi.countries }}</div>
                     <div id="year">{{ movi.year }}</div>
                     <div id="overview">{{ movi.overview }}
-                        {% for genres in movi.genres.all %}
-                            <b>{{ genres.genre }}</b>
+                        {% for g in movi.genres.all %}
+                            <b>{{ g.genre }}</b>
                         {% endfor %}
                     </div>
-                    <div id="url"><a href="http://www.themoviedb.org/movie/{{ movi.tmdb_id }}"><img src="{{ STATIC_URL }}../static/tmdb-logo.png" width="60" height="40"></a></div>
+                    <div id="url"><a href="http://www.themoviedb.org/movie/{{ movi.tmdb_id }}"><img src="{{ STATIC_URL }}tmdb-logo.png" width="60" height="40"></a></div>
                     {% if movi.seen %}
-                        <div id="seen"><a href="{% url box.views.changeseen movi.tmdb_id %}"><img src="{{ STATIC_URL }}../static/seen.gif""></a></div>
+                        <div id="seen"><a href="{# {% url box.views.changeseen movi.tmdb_id %}  #}"><img src="{{ STATIC_URL }}seen.gif"></a></div>
                     {% else %}
-                        <div id="seen"><a href="{% url box.views.changeseen movi.tmdb_id %}"><img src="{{ STATIC_URL }}../static/not_seen.gif" ></a></div>
+                        <div id="seen"><a href="{# {% url box.views.changeseen movi.tmdb_id %} #}"><img src="{{ STATIC_URL }}not_seen.gif" ></a></div>
                     {% endif %}
+                    {% if movi.count_starred %}
                     <div id="photo-block">
-                    {% for relationship in movi.duty_set.all %}
-                        {% if relationship.person.photo  %}
-                            <div id="photo">
-                                <img class="actortip" href="http://www.themoviedb.org/person/{{ relationship.person.tmdb_id }}"
-                                    title="<b>{{ relationship.person.name }}</b>|<i>{{ relationship.character }}</i>" src=../media/{{ relationship.person.photo }} width=45px height=68px>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
+                        {% for relationship in movi.duty_set.all %}
+                            {% if relationship.person.photo and relationship.person.starred %} {# and relationship.person.starred #}
+                                <div id="photo"><a href="{% url box.views.personpage relationship.person.tmdb_id %}">
+                                    <img class="actortip" href="{% url box.views.personpage relationship.person.tmdb_id %}"
+                                    title="<b>{{ relationship.person.name }}</b>|<i>{{ relationship.character }}</i>" src={{ relationship.person.photo.url }} width=45px height=68px>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
     </div>
 {% endblock %}
+
+{% comment %}
+{% block navigation %}
+    <style>
+        .ui-autocomplete-loading { background: white url('{{ STATIC_URL }}images/wait.gif') right center no-repeat; }
+        #city { width: 8em; }
+    </style>
+    <div class="ui-widget">
+        <label for="city">Your city: </label>
+        <input id="city" />
+    </div>
+
+    <script>
+        $(function() {
+            function log( message ) {
+                $( "<div/>" ).text( message ).prependTo( "#log" );
+                $( "#log" ).scrollTop( 0 );
+            }
+
+            $( "#city" ).autocomplete({
+                source: function( request, response ) {
+                    $.ajax({
+                        url: "http://ws.geonames.org/searchJSON",
+                        dataType: "jsonp",
+                        data: {
+                            featureClass: "P",
+                            style: "full",
+                            maxRows: 12,
+                            name_startsWith: request.term
+                        },
+                        success: function( data ) {
+                            response( $.map( data.geonames, function( item ) {
+                                return {
+                                    label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
+                                    value: item.name
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 2,
+                select: function( event, ui ) {
+                    log( ui.item ?
+                            "Selected: " + ui.item.label :
+                            "Nothing selected, input was " + this.value);
+                },
+                open: function() {
+                    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+                },
+                close: function() {
+                    $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+                }
+            });
+        });
+    </script>
+{% endblock %}
+    {% endcomment %}

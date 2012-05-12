@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}style_person.css" />
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            {% if pers.starred %}
+                $("#staron").show();
+                $("#staroff").hide();
+            {% else %}
+                $("#staron").hide();
+                $("#staroff").show();
+            {% endif %}
+
+            $("#toggle").click(function(){
+                $.getJSON("/change_starred_ajax/", { pers:{{ pers.tmdb_id }} }, function(json){
+                    {# alert("Was successful? " + json['success'] + "   Starred is " +  json['starstatus']); #}
+                    if (json['starstatus']){
+                        $("#staron").show();
+                        $("#staroff").hide();
+                    } else {
+                        $("#staron").hide();
+                        $("#staroff").show();
+                    }
+                });
+            });
+        });
+    </script>
+
+    <div id="poster">
+        <a href="http://www.themoviedb.org/person/{{pers.tmdb_id}}"> <img src= {{ pers.photo.url }} width=100px height=100%></a>
+    </div>
+    <div id="name">
+        {{ pers.name }}
+    </div>
+
+    <div id='toggle'>
+       <div id='staron'>
+           <img src="{{ STATIC_URL }}star.gif" width=50px height=100%>
+       </div>
+       <div id='staroff'>
+           <img src="{{ STATIC_URL }}star_off.gif" width=50px height=100%>
+       </div>
+    </div>
+
+    {% if pers.starred %}
+        starred
+    {% else %}
+        not starred
+    {% endif %}
+
+    <div class="table">
+        {% for m in pers.duty_set.all %}
+            <div class="row">
+                <div class="col">
+                    {{ m.movi.title }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+
+

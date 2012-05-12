@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}Movie details{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}style_movie.css" type="text/css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}jquery-ui-1.8.18.custom.css" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+
+    {# <p><a id="test">AJAX changeseen</a></p> #}
+
+
+    {% comment %}
+    <script>
+    $("#dialog").dialog({
+        modal: true,
+        autoOpen: false
+    });
+
+    $("a.delete").click(function(e) {
+        e.preventDefault();
+        var id = $(this).attr('id');
+        $("#dialog").dialog('option', 'buttons', {
+            "Delete": function() {
+                $.post({
+                    url: {% url box.views.moviedel %},
+                    data: {'id': id},
+                    success: function() {
+                        <!- whatever you like, some fancy effect that removes the object ->
+                    }
+                });
+                $(this).dialog("close");
+            },
+            "Cancel": function() {
+                $(this).dialog("close");
+            }
+        });
+        $("#dialog").dialog("open");
+        return false;
+    });
+    </script>
+
+
+    <div id="dialog" title="Confirm delete">Are you sure?</div>
+        <a id="{{ movi.tmdb_id }}" class="delete" href="{% url box.views.moviedel movi.tmdb_id %}">Delete</a>
+
+    {% endcomment %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.actortip').cluetip({
+                splitTitle: '|',
+                width: 200,
+                height: 'auto',
+                positionBy: 'fixed',
+                arrows: 'true',
+                cluetipClass: 'jtip',
+                cursor: 'pointer'});
+
+            {% if movi.stored %}
+                $("#storedon").show();
+                $("#storedoff").hide();
+            {% else %}
+                $("#storedon").hide();
+                $("#storedoff").show();
+            {% endif %}
+
+            {% if movi.seen %}
+                $("#seenon").show();
+                $("#seenoff").hide();
+            {% else %}
+                $("#seenon").hide();
+                $("#seenoff").show();
+            {% endif %}
+
+            $("#toggleseen").click(function(){
+                $.getJSON("/change_seen_ajax/", { mov:{{ movi.tmdb_id }} }, function(json){
+                    if (json['seenstatus']){
+                        $("#seenon").show();
+                        $("#seenoff").hide();
+                    } else {
+                        $("#seenon").hide();
+                        $("#seenoff").show();
+                    }
+                });
+            });
+
+            $("#togglestored").click(function(){
+                $.getJSON("/change_stored_ajax/", { mov:{{ movi.tmdb_id }} }, function(json){
+                    if (json['storedstatus']){
+                        $("#storedon").show();
+                        $("#storedoff").hide();
+                    } else {
+                        $("#storedon").hide();
+                        $("#storedoff").show();
+                    }
+                });
+            });
+        });
+
+        $(function() {
+            $("#datepicker1").datepicker({ dateFormat: 'dd-mm-yy', firstDay: 1 });
+            $("#datepicker1").datepicker( "setDate" , "{{ movi.seendate|date:"d-m-Y" }}");
+        });
+
+        $(function() {
+            $("#datepicker2").datepicker({ dateFormat: 'dd-mm-yy', firstDay: 1 });
+            $("#datepicker2").datepicker( "setDate" , "{{ movi.adddate|date:"d-m-Y" }}");
+        });
+    </script>
+
+    <button>
+        <a href="{% url box.views.moviedel movi.tmdb_id %}">Delete</a>
+    </button>
+
+    <div id="poster">
+        <a href="http://www.themoviedb.org/movie/{{movi.tmdb_id}}"> <img src= {{ movi.posterbig.url }} width=300px height=100%></a>
+    </div>
+
+    <div id="title">{{ movi.title }}</div>
+    <div id="year">{{ movi.year }}</div>
+    <div id="origtitle">{{ movi.origtitle }}</div>
+    <div id="countries">{{ movi.countries }}</div>
+    <div id="tagline">{{ movi.tagline }}</div>
+    <div id="overview">{{ movi.overview }}</div>
+
+    {% comment %}
+    <a href="{% url box.views.changeseen movi.tmdb_id %}"><img onClick="return togglee();" src="{{ STATIC_URL }}seen.gif"></a>
+
+    {% if movi.seen %}
+        <div id="seen"><a href="{% url box.views.changeseen movi.tmdb_id %}"><img src="{{ STATIC_URL }}seen.gif"></a></div>
+    {% else %}
+        <div id="seen"><a href="{% url box.views.changeseen movi.tmdb_id %}"><img src="{{ STATIC_URL }}not_seen.gif" ></a></div>
+    {% endif %}
+
+    {% if movi.stored %}
+        <div id="stored"><a href="{% url box.views.changestored movi.tmdb_id %}"><img src="{{ STATIC_URL }}stored.png" width=50px height=41px></a></div>
+    {% else %}
+        <div id="stored"><a href="{% url box.views.changestored movi.tmdb_id %}"><img src="{{ STATIC_URL }}not_stored.png"  width=50px height=41px></a></div>
+    {% endif %}
+    {% endcomment %}
+
+    <div id="dpicker">
+        <p>Seen: <input type="text" id="datepicker1"></p>
+    </div>
+    <div id="dpicker">
+        <p>Add: <input type="text" id="datepicker2"></p>
+    </div>
+
+    <div id='toggleseen'>
+        <div id='seenon'>
+            <img src="{{ STATIC_URL }}seen.gif" width=50px height=100%>
+        </div>
+        <div id='seenoff'>
+            <img src="{{ STATIC_URL }}not_seen.gif" width=50px height=100%>
+        </div>
+    </div>
+
+    <div id='togglestored'>
+        <div id='storedon'>
+            <img src="{{ STATIC_URL }}stored.png" width=50px height=100%>
+        </div>
+        <div id='storedoff'>
+            <img src="{{ STATIC_URL }}not_stored.png" width=50px height=100%>
+        </div>
+    </div>
+
+    <div class="table">
+        {% for actor in movi.duty_set.all %}
+        <div class="row">
+            <div class="col">
+                <div id="photo"><a href="{% url box.views.personpage actor.person.tmdb_id %}">
+                    <img class="actortip" href="{% url box.views.personpage actor.person.tmdb_id %}"
+                         title="<b>{{ actor.person.name }}</b>|<i>{{ actor.character }}</i>" src={{ actor.person.url }} width=45px height=68px>
+                </a>
+                </div>
+            </div>
+            <div class="col">
+                {{ actor.person.name }}
+            </div>
+            <div class="col">
+                {{ actor.character }}
+            </div>
+            <div class="col">
+                {{ actor.person.starred|yesno:"Starred,Nonstarred" }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="table">
+        {% for g in movi.genres.all %}
+            <div class="row">
+                {{ g.genre }}
+            </div>
+        {% endfor %}
+    </div>
+
+    {% comment %}
+    <div id="">movi.genres</div>
+    <div id="">movi.persons</div>
+    {% endcomment %}
+    {% comment %} not implemented <div id="">movi.certification</div> {% endcomment %}
+{% endblock %}
+
+{% block extra %}
+    <p>test</p>
+    <p>test</p>
+    <p>test</p>
+    <p>test</p>
+    <p>test</p>
+{% endblock %}

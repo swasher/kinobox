@@ -3,13 +3,9 @@
 
 #git clone https://github.com/dbr/themoviedb.git
 
-import tmdb
-from tmdb import *
-import logging, sys
-import datetime
+import logging, urllib, datetime
 from box.models import *
 from django.core.files import File
-
 from tmdb3 import set_key, get_locale, set_locale, searchMovie, set_cache, Movie
 
 logging.basicConfig(format='%(asctime)s %(levelname)s \t %(message)s',datefmt='%d/%m/%Y %H:%M',filename='/home/swasher/kinobox/log',level=logging.DEBUG)
@@ -20,7 +16,7 @@ class kino:
 def get_list_by_name(zapros):
     set_key('c97c17e619252e35bad2e158d4211fcc')
     set_locale('ru', 'ru')
-    set_cache(engine='file', filename='~/.tmdb3cache')
+    set_cache(engine='file', filename='/home/swasher/kinobox/.tmdb3cache')
 
     results = searchMovie(zapros)
     answer=[]
@@ -50,7 +46,7 @@ def get_list_by_name(zapros):
 def add_tmdb_movie(id):
     set_key('c97c17e619252e35bad2e158d4211fcc')
     set_locale('ru', 'ru')
-    set_cache(engine='file', filename='~/.tmdb3cache')
+    set_cache(engine='file', filename='/home/swasher/kinobox/.tmdb3cache')
 
     m = Movi()
 
@@ -68,6 +64,9 @@ def add_tmdb_movie(id):
     m.seen=False
     m.seendate=datetime.date.today()
     m.myrating=0
+    m.stored=True
+    m.adddate=datetime.date.today()
+    m.tagline=mov.tagline
     m.save()
 
     try:
@@ -79,6 +78,14 @@ def add_tmdb_movie(id):
         #{'__module__': 'tmdb3.tmdb_exceptions', '__doc__': None}
         #print 'cant retrieve'
         # если не обрабатывать - просто получается пустое поле, его можно обработать дальше
+        poster = urllib.urlretrieve(mov.poster.geturl(size='w92'))
+        m.poster.save('poster_'+'w92_'+str(id)+'.jpg', File(open(poster[0])))
+        pass
+
+    try:
+        posterbig = urllib.urlretrieve(mov.poster.geturl(size='w500'))
+        m.posterbig.save('poster_'+'w500_'+str(id)+'.jpg', File(open(posterbig[0])))
+    except:
         pass
 
     #get counries
@@ -111,16 +118,16 @@ def add_tmdb_movie(id):
 
     cast=mov.cast
     for actor in cast:
-        #print actor.id
-        #print actor.name
-        #print actor.character
         try:
             pers=Person.objects.filter(name=actor.name)[0]
         except:
+            #если актера actor.name нет в базе, то вызывется исключение, актер добавляется, и обзывется как pers
             p = Person(name=actor.name, tmdb_id=actor.id)
             p.save()
             pers=Person.objects.filter(name=actor.name)[0]
 
+            #если актера до сих пор небыло, то добавляем фото
+            #todo в дальнейшем это убрать - сделать даунлоад фото, когда актер star-рится
             try:
                 photo = urllib.urlretrieve(actor.profile.geturl(size='w45'))
                 p.photo.save('photo_'+'w45_'+str(actor.id)+'.jpg', File(open(photo[0])))
@@ -133,8 +140,5 @@ def add_tmdb_movie(id):
                 pass
 
         # В это месте у нас есть объекты фильма 'm' и актера 'pers'
-        #m.persons.add(pers)
-        actorder=actor.order
-        if not isinstance(actor.order, int): actorder=-1
-        d = Duty(person=pers, movi=m, department='', character=actor.character, job='', order=actorder)
+        d = Duty(person=pers, movi=m, department='', character=actor.character, job='', order=actor.order)
         d.save()
